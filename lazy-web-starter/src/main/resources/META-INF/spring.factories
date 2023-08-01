@@ -1,0 +1,7 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.lazy.web.config.WebConfig,\
+com.lazy.web.config.SwaggerConfig,\
+com.lazy.web.security.config.CustomizeSecurityConfig,\
+com.lazy.web.security.config.AuthSecurityConfig,\
+com.lazy.web.security.config.WebSecurityConfig
+
