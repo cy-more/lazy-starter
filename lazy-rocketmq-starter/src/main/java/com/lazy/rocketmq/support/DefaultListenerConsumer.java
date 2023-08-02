@@ -54,7 +54,7 @@ public class DefaultListenerConsumer implements MessageListener {
             //重试
             if (message.getReconsumeTimes() > maxRetryTimes){
                 //记录，预警
-                log.error(MqUtil.initMqInfo(message, "消费异常，准备重试,error:" + e.getMessage()), e);
+                log.error(MqUtil.initMqInfo(message, "warnMessage:消费异常，准备重试,error:" + e.getMessage()), e);
                 return Action.ReconsumeLater;
             }
             log.warn(e.getMessage(), e);
