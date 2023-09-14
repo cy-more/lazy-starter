@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.StandardEnvironment;
 
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * @description：整合listener列表
  * @date ：2021/11/16 11:10
  */
+@Order(1)
 @Slf4j
 @ConditionalOnProperty(prefix = "mq.rocket.ons", value = {"nameSrvAddr"})
 @EnableConfigurationProperties(ConsumerProperties.class)

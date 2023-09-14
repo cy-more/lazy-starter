@@ -19,5 +19,7 @@ public interface YsRocketMqConsumer {
      * 配置参考：PropertyKeyConst
      * @param consumerBean 原生消费者类
      */
-    void prepareStart(ConsumerBean consumerBean);
+    default void prepareStart(ConsumerBean consumerBean){
+
+    }
 }

@@ -3,6 +3,9 @@ package com.lazy.cache.aspect;
 import com.lazy.cache.annotation.YsMultiCacheable;
 import com.lazy.cache.support.YsBusinessKeyProvider;
 import com.lazy.cache.support.YsCacheExpressionEvaluator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -57,29 +60,41 @@ public class YsMultiCacheAspect {
 
     @Around("multiCachePointCut() && @annotation(multiCacheable)")
     public Object around(ProceedingJoinPoint point, YsMultiCacheable multiCacheable) throws Throwable{
-        Object result;
+        CacheInfo cacheInfo = null;
         try{
-            result = cacheHandle(point, multiCacheable);
+            cacheInfo = cacheHandle(point, multiCacheable);
         }catch (Exception e){
             log.error("缓存不生效，error:" + e.getMessage(), e);
-            result = point.proceed();
         }
-        return result;
+
+        if (cacheInfo == null){
+            return point.proceed();
+        }else{
+            return cacheInfo.getCache().get(cacheInfo.getKey(), () -> {
+                try {
+                    return point.proceed();
+                }catch (Exception e){
+                    throw e;
+                }catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
+                }
+            });
+        }
     }
 
-    private Object cacheHandle(ProceedingJoinPoint point, YsMultiCacheable multiCacheable) throws Throwable{
+    private CacheInfo cacheHandle(ProceedingJoinPoint point, YsMultiCacheable multiCacheable) throws Throwable{
         Method method = ysBusinessKeyProvider.getMethod(point);
         MethodBasedEvaluationContext methodContext = new MethodBasedEvaluationContext(PRESENT, method, point.getArgs(), parameterNameDiscoverer);
         if (!isConditionPassing(multiCacheable, methodContext)){
             //缓存不生效
-            return point.proceed();
+            return null;
         }
 
         Object cacheName = expressionEvaluator.getValUnCache(multiCacheable.value(), methodContext);
         Object key = expressionEvaluator.getValUnCache(multiCacheable.key(), methodContext);
         if (cacheName == null){
             //缓存不生效
-            return point.proceed();
+            return null;
         }
         if (key == null){
             key = PRESENT;
@@ -88,15 +103,11 @@ public class YsMultiCacheAspect {
         //获取缓存数据
         Cache cache = cacheManager.getCache(cacheName.toString());
 
-        return cache.get(key, () -> {
-            try {
-                return point.proceed();
-            }catch (Exception e){
-                throw e;
-            }catch (Throwable throwable) {
-                throw new RuntimeException(throwable);
-            }
-        });
+        if (cache == null){
+            return null;
+        }
+
+        return new CacheInfo(cache, key);
     }
 
     /**
@@ -112,5 +123,12 @@ public class YsMultiCacheAspect {
         return (Boolean.TRUE.equals(parser.parseExpression(cacheable.condition()).getValue(method, Boolean.class)));
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class CacheInfo {
+        private Cache cache;
 
+        private Object key;
+    }
 }

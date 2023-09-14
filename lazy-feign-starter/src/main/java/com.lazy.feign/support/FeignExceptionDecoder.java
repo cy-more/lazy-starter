@@ -41,7 +41,7 @@ public class FeignExceptionDecoder implements ErrorDecoder {
             }
 
         } catch (IOException ex) {
-            log.info("组装feign异常失败，非指定异常，error:" + ex);
+            log.info(String.format("组装feign异常失败，非指定异常，method:%s，error:%s", methodKey, ex.getMessage()), ex);
         }
         return defaultErrorDecoder.decode(methodKey, response);
     }

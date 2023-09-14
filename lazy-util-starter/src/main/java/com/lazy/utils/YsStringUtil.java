@@ -13,6 +13,7 @@ public class YsStringUtil {
 
     private static final Pattern LINE_PATTERN = Pattern.compile("_(\\w)");
     private static final Pattern HUMP_PATTERN = Pattern.compile("[A-Z]");
+    private static final Pattern LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]*$");
 
     /**
@@ -70,5 +71,19 @@ public class YsStringUtil {
         }
         return NUMBER_PATTERN.matcher(str).matches();
     }
+
+    /**
+     * 判断是否包含字母的字符串
+     * @param str
+     * @return
+     */
+    public static boolean isContainLetter(String str){
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+        Matcher matcher = LETTER_PATTERN.matcher(str);
+        return matcher.find();
+    }
+
 
 }

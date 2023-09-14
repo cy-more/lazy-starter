@@ -1,9 +1,9 @@
 package com.lazy.cache.aspect;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.lazy.cache.annotation.YsMultiCacheEvict;
 import com.lazy.cache.support.YsBusinessKeyProvider;
 import com.lazy.cache.support.YsCacheExpressionEvaluator;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -60,34 +60,42 @@ public class YsMultiCacheEvictAspect {
 
     @Around("multiCachePointCut() && @annotation(multiCacheEvict)")
     public Object around(ProceedingJoinPoint point, YsMultiCacheEvict multiCacheEvict) throws Throwable{
-        Object result;
-        try{
-            result = cacheHandle(point, multiCacheEvict);
-        }catch (Exception e){
-            log.error("缓存删除不生效，error:" + e.getMessage(), e);
-            result = point.proceed();
-        }
+        HandleBeforeResult handleBeforeResult = cacheHandleBefore(point, multiCacheEvict);
+
+        Object result = point.proceed();
+
+        cacheHandleAfter(handleBeforeResult.getCaches(), handleBeforeResult.getKey(), multiCacheEvict);
         return result;
     }
 
-    public Object cacheHandle(ProceedingJoinPoint point, YsMultiCacheEvict multiCacheEvict) throws Throwable {
-        Method method = ysBusinessKeyProvider.getMethod(point);
-        MethodBasedEvaluationContext methodContext = new MethodBasedEvaluationContext(PRESENT, method, point.getArgs(), parameterNameDiscoverer);
+    public HandleBeforeResult cacheHandleBefore(ProceedingJoinPoint point, YsMultiCacheEvict multiCacheEvict) {
+        HandleBeforeResult handleBeforeResult = new HandleBeforeResult();
+        try{
+            Method method = ysBusinessKeyProvider.getMethod(point);
+            MethodBasedEvaluationContext methodContext = new MethodBasedEvaluationContext(PRESENT, method, point.getArgs(), parameterNameDiscoverer);
 
-        List<Cache> caches = getCache(multiCacheEvict.value(), methodContext);
-        if (ObjectUtil.isEmpty(caches)){
-            //缓存删除不生效
-            return point.proceed();
+            handleBeforeResult.setCaches(getCache(multiCacheEvict.value(), methodContext));
+            handleBeforeResult.setKey(expressionEvaluator.getValUnCache(multiCacheEvict.key(), methodContext));
+        }catch (Exception e){
+            log.error("缓存删除不生效，error:" + e.getMessage(), e);
         }
-        String key = expressionEvaluator.getValUnCache(multiCacheEvict.key(), methodContext);
+        return handleBeforeResult;
+    }
 
-        //延迟双删
+    public void cacheHandleAfter(List<Cache> caches, String key, YsMultiCacheEvict multiCacheEvict){
+        try {
+            if (caches == null) {
+                log.info("缓存删除不生效，name:" + multiCacheEvict.value());
+                return;
+            }
+            //延迟双删
 //        removeCache(caches, key);
-        Object cacheResult = point.proceed();
-        //极致的话：
-        //---补充延迟删除
-        removeCache(caches, key);
-        return cacheResult;
+            //极致的话：
+            //---补充延迟删除
+            removeCache(caches, key);
+        }catch (Exception e){
+            log.error("缓存删除不生效，error:" + e.getMessage(), e);
+        }
     }
 
     /**
@@ -145,4 +153,9 @@ public class YsMultiCacheEvictAspect {
 
     }
 
+    @Data
+    static class HandleBeforeResult {
+        List<Cache> caches;
+        String key;
+    }
 }
