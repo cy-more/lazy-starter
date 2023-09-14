@@ -1,9 +1,13 @@
 package com.lazy.rocketmq.util;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReflectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
+import com.aliyun.openservices.ons.api.bean.ConsumerBean;
+import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
+import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl;
 import com.lazy.rocketmq.config.ConsumerProperties;
 import com.lazy.rocketmq.constant.MqComConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -148,5 +152,16 @@ public class MqUtil {
     public static void withDelay(Message message, long delayTime){
         message.setStartDeliverTime(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli()
                 + delayTime);
+    }
+
+    /**
+     * 获取原生消费实现类
+     * @param consumerBean
+     * @return
+     */
+    public static DefaultMQPushConsumerImpl getConsumerImpl(ConsumerBean consumerBean){
+        return  ((DefaultMQPushConsumer) ReflectUtil.getFieldValue(
+                ReflectUtil.getFieldValue(consumerBean, "consumer"), "defaultMQPushConsumer"))
+                .getDefaultMQPushConsumerImpl();
     }
 }
