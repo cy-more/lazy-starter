@@ -24,7 +24,7 @@ public class FeignExceptionDecoder implements ErrorDecoder {
         try {
             int httpCode = response.status();
             if(HttpStatus.SERVICE_UNAVAILABLE.value() == httpCode){
-                log.warn(response.body().toString());
+                log.warn("调用："+methodKey + "  503,respobse:" + response.body());
                 return new HystrixBadRequestException("服务正在短暂维护，请稍后再试");
             }
 
