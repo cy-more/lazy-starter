@@ -282,7 +282,7 @@
             <dependency>
                 <groupId>com.aliyun.openservices</groupId>
                 <artifactId>ons-client</artifactId>
-                <version>1.8.8.1.Final</version>
+                <version>1.8.8.8.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.rocketmq</groupId>
@@ -419,4 +419,14 @@
         <defaultGoal>compile</defaultGoal>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://packages.aliyun.com/maven/repository/2248700-release-5ONwg1/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://packages.aliyun.com/maven/repository/2248700-snapshot-0dW0wd/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
