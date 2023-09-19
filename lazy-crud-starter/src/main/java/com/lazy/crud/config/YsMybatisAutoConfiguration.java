@@ -3,15 +3,21 @@ package com.lazy.crud.config;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.lazy.crud.service.DataDicService;
 import com.lazy.crud.service.impl.DataDicServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.StringUtils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ：cy
@@ -20,6 +26,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 public class YsMybatisAutoConfiguration {
+
+    @Autowired
+    CacheProperties cacheProperties;
 
     /**
      * mybatisplus拦截器
@@ -55,5 +64,24 @@ public class YsMybatisAutoConfiguration {
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setThreadNamePrefix("AsyncThread--");
         return executor;
+    }
+
+    /**
+     * 内存缓存
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(name = "caffeineCache")
+    public Cache<Object, Object> caffeineCache(){
+        String specification = cacheProperties.getCaffeine().getSpec();
+        if (StringUtils.hasText(specification)) {
+            return Caffeine.from(specification).build();
+        }else {
+            //默认
+            return Caffeine.newBuilder()
+                    .expireAfterWrite(1, TimeUnit.MINUTES)
+                    .maximumSize(10_000)
+                    .build();
+        }
     }
 }
