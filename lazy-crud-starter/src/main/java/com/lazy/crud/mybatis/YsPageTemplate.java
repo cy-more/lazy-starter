@@ -18,12 +18,12 @@ public abstract class YsPageTemplate<M extends Serializable, V> {
 
     public YsPageVO<V> templatePage(YsPageDTO<M> dto){
         //查询
-        List<V> yesoulsnvos = tPageList(dto);
+        List<V> vList = tPageList(dto);
         //转意
-        yesoulsnvos.forEach(this::tTransName);
+        vList.forEach(this::tTransName);
 
         YsPageVO<V> pageVO = new YsPageVO<>();
-        pageVO.setRecords(yesoulsnvos);
+        pageVO.setRecords(vList);
         if (dto.isSearchCount()) {
             Integer snCount = tPageCount(dto);
             pageVO.setTotal(snCount == null ? 0L : snCount);
