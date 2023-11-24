@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.lazy.crud.mybatis.AesTypeHandler;
 import com.lazy.crud.service.DataDicService;
 import com.lazy.crud.service.impl.DataDicServiceImpl;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -84,4 +87,13 @@ public class YsMybatisAutoConfiguration {
                     .build();
         }
     }
+
+    @Bean
+    @ConditionalOnMissingBean(TypeHandlerRegistry.class)
+    public TypeHandlerRegistry typeHandlerRegistry(SqlSessionFactory sqlSessionFactory){
+        TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration().getTypeHandlerRegistry();
+        typeHandlerRegistry.register(AesTypeHandler.class);
+        return typeHandlerRegistry;
+    }
+
 }

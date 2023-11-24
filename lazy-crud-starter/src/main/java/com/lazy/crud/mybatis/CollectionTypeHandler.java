@@ -1,7 +1,7 @@
 package com.lazy.crud.mybatis;
 
 import com.alibaba.fastjson.JSONArray;
-import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
@@ -54,6 +54,6 @@ public class CollectionTypeHandler<T> extends BaseTypeHandler<List<T>> {
     }
 
     protected Class<T> currentModelClass() {
-        return (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 0);
+        return (Class<T>) GenericTypeUtils.resolveTypeArguments(this.getClass(), CollectionTypeHandler.class)[0];
     }
 }

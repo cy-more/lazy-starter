@@ -8,16 +8,19 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.lazy.annotation.YsCondition;
+import com.lazy.crud.constants.CrudConstant;
+import com.lazy.crud.service.DataDicService;
 import com.lazy.entity.YsPageDTO;
 import com.lazy.entity.YsPageVO;
 import com.lazy.exception.BizException;
-import com.lazy.crud.constants.CrudConstant;
-import com.lazy.crud.service.DataDicService;
 import com.lazy.utils.YsBeanUtil;
+import org.apache.ibatis.reflection.property.PropertyNamer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.StringUtils;
@@ -159,7 +162,7 @@ public class YsServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T>
                 throw new RuntimeException(errorMsg);
             }
             //为空跳过
-            if (ysCondition.ignoreNullValue() && value == null){
+            if (ysCondition.ignoreNullValue() && ObjectUtil.isEmpty(value)){
                 //赋予默认值
                 value = ysCondition.defaultValue();
                 if (ObjectUtil.isEmpty(value)) {
@@ -339,5 +342,17 @@ public class YsServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T>
                         .collect(Collectors.toMap(TableFieldInfo::getProperty, TableFieldInfo::getColumn)));
 
         return fieldMap.get(fieldName);
+    }
+
+    /**
+     * 获取字段名
+     * @param func
+     * @return
+     * @param <T>
+     */
+    public <T> String getFieldName(SFunction<T, ?> func) {
+        //序列化Lambda
+        String name = LambdaUtils.extract(func).getImplMethodName();
+        return PropertyNamer.methodToProperty(name);
     }
 }
