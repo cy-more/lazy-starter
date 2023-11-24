@@ -4,7 +4,6 @@ import com.aliyun.openservices.ons.api.MessageListener;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
-import com.lazy.rocketmq.annotation.YsRocketMqListener;
 import com.lazy.rocketmq.config.ConsumerProperties;
 import com.lazy.rocketmq.tlog.YsTlogMqConsumer;
 import com.lazy.rocketmq.util.MqUtil;
@@ -28,9 +27,9 @@ public class YsRocketMQListenerFactory {
         this.consumerProperties = consumerProperties;
     }
 
-    public ConsumerBean buildConsumer(YsRocketMqConsumer bean, YsRocketMqListener annotation) {
-        String consumerGroup = annotation.consumerGroup();
-        String topic = annotation.topic();
+    public ConsumerBean buildConsumer(YsRocketMqConsumer bean, YsRocketMqListenerBean annotation) {
+        String consumerGroup = annotation.getConsumerGroup();
+        String topic = annotation.getTopic();
 
         ConsumerBean consumerBean = new ConsumerBean();
 
@@ -44,7 +43,7 @@ public class YsRocketMQListenerFactory {
         //创建消费业务对象
         //决定是否开启tlog
         YsRocketMqConsumer ysRocketMqConsumer = null;
-        switch (annotation.enableTlog()){
+        switch (annotation.getEnableTlog()){
             case NONE:
                 ysRocketMqConsumer = consumerProperties.isEnableTlog() ? new YsTlogMqConsumer(bean) : bean;
                 break;

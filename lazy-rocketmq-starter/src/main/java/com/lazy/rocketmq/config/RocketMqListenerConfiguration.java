@@ -2,9 +2,12 @@ package com.lazy.rocketmq.config;
 
 import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.lazy.rocketmq.annotation.YsRocketMqListener;
+import com.lazy.rocketmq.support.MqBizException;
 import com.lazy.rocketmq.support.YsRocketMQListenerFactory;
 import com.lazy.rocketmq.support.YsRocketMqConsumer;
+import com.lazy.rocketmq.support.YsRocketMqListenerBean;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.BeansException;
@@ -82,7 +85,7 @@ public class RocketMqListenerConfiguration implements ApplicationContextAware, S
 
         String registerBeanName = beanName + counter.incrementAndGet();
         genericApplicationContext.registerBean(registerBeanName, ConsumerBean.class,
-                () -> listenerFactory.buildConsumer((YsRocketMqConsumer)bean, annotation));
+                () -> listenerFactory.buildConsumer((YsRocketMqConsumer)bean, transListener(environment, annotation)));
         ConsumerBean consumerBean = genericApplicationContext.getBean(registerBeanName,
                 ConsumerBean.class);
         if (!consumerBean.isStarted()) {
@@ -95,4 +98,26 @@ public class RocketMqListenerConfiguration implements ApplicationContextAware, S
         }
     }
 
+    /**
+     * 解析注解配置（表达式）
+     * @param environment
+     * @param annotation
+     * @return
+     */
+    private YsRocketMqListenerBean transListener(StandardEnvironment environment, YsRocketMqListener annotation){
+        YsRocketMqListenerBean annotationBean = new YsRocketMqListenerBean();
+        String topic = environment.resolvePlaceholders(annotation.topic());
+        if (StringUtils.isBlank(topic)){
+            throw new MqBizException("topic不能为空或表达式填写不正确");
+        }
+        annotationBean.setTopic(topic);
+        String consumerGroup = environment.resolvePlaceholders(annotation.consumerGroup());
+        if (StringUtils.isBlank(consumerGroup)){
+            throw new MqBizException("consumerGroup不能为空或表达式填写不正确");
+        }
+        annotationBean.setConsumerGroup(consumerGroup);
+        annotationBean.setSelectorExpression(environment.resolvePlaceholders(annotation.selectorExpression()));
+        annotationBean.setEnableTlog(annotation.enableTlog());
+        return annotationBean;
+    }
 }
