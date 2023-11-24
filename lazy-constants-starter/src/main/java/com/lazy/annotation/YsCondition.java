@@ -27,13 +27,13 @@ public @interface YsCondition {
     String column() default "";
 
     /**
-     * 是否忽略为空的值，默认是(defaultValue有值不会生效)
+     * 是否忽略为空(包含空字符，空数组）的值，默认是(defaultValue有值不会生效)
      * @return
      */
     boolean ignoreNullValue() default true;
 
     /**
-     * 默认值
+     * 默认值,空字符不生效
      * @return
      */
     String defaultValue() default "";
@@ -43,6 +43,7 @@ public @interface YsCondition {
      * @return
      */
     OrderType orderType() default OrderType.IGNORE;
+
 
     enum Type {
 

@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.support.NullValue;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,10 +20,11 @@ import java.util.concurrent.Executor;
 
 /**
  * @author ：cy
- * @description：内存缓存切面
+ * @description：redis缓存切面
  * @date ：2021/12/10 14:29
  */
 @Slf4j
+@ConditionalOnProperty(prefix = "spring.cache.multi", value = {"topic"})
 @Aspect
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @Component
@@ -31,10 +33,10 @@ public class YsRedisCacheAspect {
     /**
      * 缓存key前缀
      */
-    private static final String KEY_PREFIX = "ys_cache:";
+    private static final String KEY_PREFIX = "lazy_cache:";
 
     @Autowired
-    RedisTemplate<String, Object> redisTemplate;
+    RedisTemplate<Object, Object> cacheRedisTemplate;
 
     @Autowired
     YsBusinessKeyProvider ysBusinessKeyProvider;
@@ -53,7 +55,7 @@ public class YsRedisCacheAspect {
 
         Object result = null;
         try {
-            result = redisTemplate.opsForValue().get(keyName);
+            result = cacheRedisTemplate.opsForValue().get(keyName);
         } catch (Exception e) {
             cacheErrorHandle(e, "获取缓存失败", redisCache);
         }
@@ -63,7 +65,7 @@ public class YsRedisCacheAspect {
             Object cacheVal = result != null ? result : NullValue.INSTANCE;
             taskExecutor.execute(() -> {
                 try {
-                    redisTemplate.opsForValue().set(keyName, cacheVal
+                    cacheRedisTemplate.opsForValue().set(keyName, cacheVal
                             , redisCache.timeout(), redisCache.unit());
                 } catch (Exception e) {
                     cacheErrorHandle(e, cacheVal, redisCache);

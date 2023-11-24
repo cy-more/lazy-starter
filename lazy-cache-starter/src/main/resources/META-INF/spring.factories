@@ -1,3 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.lazy.cache.config.YsCacheAutoConfiguration,\
-  com.lazy.cache.config.YsRedisAutoConfiguration,\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.lazy.cache.config.YsRedisAutoConfiguration,\
+  com.lazy.cache.config.YsCacheAutoConfiguration,\
   com.lazy.cache.config.YsCacheListenerConfiguration

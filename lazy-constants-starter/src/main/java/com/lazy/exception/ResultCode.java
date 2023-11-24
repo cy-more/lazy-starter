@@ -69,7 +69,7 @@ public enum ResultCode {
     /**
      * 用户不存在
      */
-    ILLEGAL_USER("40003", "非法用户"),
+    ILLEGAL_USER("40003", "用户不存在"),
 
     /**
      * 用户凭据不受信任
