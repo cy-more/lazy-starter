@@ -15,6 +15,7 @@ public class YsStringUtil {
     private static final Pattern HUMP_PATTERN = Pattern.compile("[A-Z]");
     private static final Pattern LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]*$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
 
     /**
      * 驼峰转下划线,最后转为大写
@@ -85,5 +86,11 @@ public class YsStringUtil {
         return matcher.find();
     }
 
-
+    public static boolean isPhoneNum(String str){
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+        Matcher matcher = PHONE_PATTERN.matcher(str);
+        return matcher.find();
+    }
 }

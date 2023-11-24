@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author ：cy
@@ -38,4 +40,12 @@ public class YsBeanUtil {
 
         return target;
     }
+
+    public static <T, R> List<T> toBeanForList(List<? extends R> list, Class<T> clazz){
+        if (null == list) {
+            return null;
+        }
+        return list.stream().map(o -> YsBeanUtil.toBean(o, clazz)).collect(Collectors.toList());
+    }
+
 }
