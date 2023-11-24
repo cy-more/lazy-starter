@@ -1,4 +1,4 @@
-package com.lazy.rocketmq.support;
+package com.lazy.rocketmq.support.consumer;
 
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
@@ -11,6 +11,7 @@ import com.aliyun.openservices.ons.api.bean.ConsumerBean;
  * @date ：2021/11/2 10:09
  */
 public interface YsRocketMqConsumer {
+
 
     Action consume(final Message message, final ConsumeContext context);
 

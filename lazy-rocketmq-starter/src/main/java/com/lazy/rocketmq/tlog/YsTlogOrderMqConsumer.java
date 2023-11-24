@@ -1,10 +1,10 @@
 package com.lazy.rocketmq.tlog;
 
-import com.aliyun.openservices.ons.api.Action;
-import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.bean.ConsumerBean;
-import com.lazy.rocketmq.support.consumer.YsRocketMqConsumer;
+import com.aliyun.openservices.ons.api.bean.OrderConsumerBean;
+import com.aliyun.openservices.ons.api.order.ConsumeOrderContext;
+import com.aliyun.openservices.ons.api.order.OrderAction;
+import com.lazy.rocketmq.support.consumer.YsRocketMqOrderConsumer;
 import com.lazy.rocketmq.util.MqUtil;
 import com.yomahub.tlog.core.mq.TLogMqConsumerProcessor;
 import com.yomahub.tlog.core.mq.TLogMqRunner;
@@ -20,15 +20,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date: 2023-06-20 15:44
  **/
 @Slf4j
-public class YsTlogMqConsumer implements YsRocketMqConsumer {
+public class YsTlogOrderMqConsumer implements YsRocketMqOrderConsumer {
 
-    private final YsRocketMqConsumer consumer;
-    public YsTlogMqConsumer(YsRocketMqConsumer consumer){
+    private final YsRocketMqOrderConsumer consumer;
+    public YsTlogOrderMqConsumer(YsRocketMqOrderConsumer consumer){
         this.consumer = consumer;
     }
 
     @Override
-    public Action consume(Message message, ConsumeContext context) {
+    public OrderAction consume(Message message, ConsumeOrderContext context) {
         TLogMqWrapBean tLogMqWrapBean;
         try {
             tLogMqWrapBean = MqUtil.toObj(message.getBody(), TLogMqWrapBean.class);
@@ -39,7 +39,7 @@ public class YsTlogMqConsumer implements YsRocketMqConsumer {
                     , message.getTag()));
             return consumer.consume(message, context);
         }
-        AtomicReference<Action> result = new AtomicReference<>();
+        AtomicReference<OrderAction> result = new AtomicReference<>();
         TLogMqConsumerProcessor.process(tLogMqWrapBean, (TLogMqRunner<Object>) o -> {
             //业务操作
             message.setBody(MqUtil.toByte(o));
@@ -49,7 +49,7 @@ public class YsTlogMqConsumer implements YsRocketMqConsumer {
     }
 
     @Override
-    public void prepareStart(ConsumerBean consumerBean) {
+    public void prepareStart(OrderConsumerBean consumerBean) {
         consumer.prepareStart(consumerBean);
     }
 

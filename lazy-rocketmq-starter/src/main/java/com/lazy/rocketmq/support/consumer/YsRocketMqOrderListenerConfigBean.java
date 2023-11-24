@@ -1,6 +1,6 @@
-package com.lazy.rocketmq.support;
+package com.lazy.rocketmq.support.consumer;
 
-import com.lazy.rocketmq.annotation.YsRocketMqListener;
+import com.lazy.rocketmq.annotation.YsRocketMqOrderListener;
 import lombok.Data;
 
 /**
@@ -9,7 +9,7 @@ import lombok.Data;
  * @date: 2023-11-24 11:10
  **/
 @Data
-public class YsRocketMqListenerBean {
+public class YsRocketMqOrderListenerConfigBean {
 
     /**
      * 主题
@@ -39,6 +39,5 @@ public class YsRocketMqListenerBean {
      * 否是开启tlog
      * @return
      */
-    YsRocketMqListener.EnableTlogEnum enableTlog;
-
+    private YsRocketMqOrderListener.EnableTlogEnum enableTlog;
 }

@@ -1,9 +1,10 @@
-package com.lazy.rocketmq.support;
+package com.lazy.rocketmq.support.consumer;
 
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.lazy.rocketmq.support.MqBizException;
 import com.lazy.rocketmq.util.MqUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -25,7 +26,7 @@ public class DefaultListenerConsumer implements MessageListener {
 
     YsRocketMqConsumer ysRocketMqConsumer;
 
-    public DefaultListenerConsumer(YsRocketMqConsumer ysRocketMqConsumer, YsRocketMqListenerBean consumer) {
+    public DefaultListenerConsumer(YsRocketMqConsumer ysRocketMqConsumer, YsRocketMqListenerConfigBean consumer) {
         this.ysRocketMqConsumer = ysRocketMqConsumer;
         this.maxRetryTimes = consumer.getMaxRetryTimes();
     }

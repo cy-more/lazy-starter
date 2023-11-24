@@ -1,10 +1,12 @@
-package com.lazy.rocketmq.support;
+package com.lazy.rocketmq.support.producer;
 
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.OnExceptionContext;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
+import com.aliyun.openservices.ons.api.bean.OrderProducerBean;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
+import com.aliyun.openservices.ons.api.order.OrderProducer;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -17,8 +19,21 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
 
     ProducerBean producer;
 
-    public YsAbstractMqProducer(ProducerBean producer) {
+    /**
+     * 顺序producer
+     */
+    OrderProducer orderProducer;
+
+    public YsAbstractMqProducer(ProducerBean producer, OrderProducerBean orderProducer) {
         this.producer = producer;
+    }
+
+    public OrderProducer getOrderProducer() {
+        return orderProducer;
+    }
+
+    public void setOrderProducer(OrderProducer orderProducer) {
+        this.orderProducer = orderProducer;
     }
 
     public ProducerBean getProducer() {
@@ -72,10 +87,12 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
      * @param topic
      * @param tag
      * @param msgBody
+     * @param shardingKey
      */
-    public void sendOrder(String topic, String tag, String msgBody){
-        Message message = initMessage(topic, tag, null, msgBody);
-        producer.sendOneway(message);
+    @Override
+    public void sendOrder(String topic, String tag, String key, String msgBody, String shardingKey){
+        Message message = initMessage(topic, tag, key, msgBody);
+        orderProducer.send(message, shardingKey);
     }
 
     public void start(){
@@ -85,6 +102,7 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
     public void shutdown(){
         log.debug("关闭mq生产者实例success");
         producer.shutdown();
+        orderProducer.shutdown();
     }
 
 

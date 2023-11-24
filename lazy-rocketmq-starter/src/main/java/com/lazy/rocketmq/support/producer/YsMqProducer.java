@@ -1,4 +1,4 @@
-package com.lazy.rocketmq.support;
+package com.lazy.rocketmq.support.producer;
 
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
@@ -11,6 +11,8 @@ import com.aliyun.openservices.ons.api.bean.ProducerBean;
 public interface YsMqProducer {
 
     ProducerBean getProducer();
+
+
 
     /**
      * 发送普通消息
@@ -35,7 +37,7 @@ public interface YsMqProducer {
      * @param tag
      * @param msgBody
      */
-    void sendOrder(String topic, String tag, String msgBody);
+    void sendOrder(String topic, String tag, String key, String msgBody, String shardingKey);
 
     /**
      * 初始化message

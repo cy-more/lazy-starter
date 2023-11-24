@@ -1,6 +1,7 @@
-package com.lazy.rocketmq.support;
+package com.lazy.rocketmq.support.producer;
 
 import com.aliyun.openservices.ons.api.Message;
+import com.aliyun.openservices.ons.api.bean.OrderProducerBean;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.lazy.rocketmq.util.MqUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class YsDefaultMqProducer extends YsAbstractMqProducer{
 
-    public YsDefaultMqProducer(ProducerBean producer) {
-        super(producer);
+    public YsDefaultMqProducer(ProducerBean producer, OrderProducerBean orderProducer) {
+        super(producer, orderProducer);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.lazy.rocketmq.config;
 
+import com.aliyun.openservices.ons.api.bean.OrderProducerBean;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
-import com.lazy.rocketmq.support.YsDefaultMqProducer;
-import com.lazy.rocketmq.support.YsMqProducer;
+import com.lazy.rocketmq.support.producer.YsDefaultMqProducer;
+import com.lazy.rocketmq.support.producer.YsMqProducer;
 import com.lazy.rocketmq.tlog.YsTlogMqProducer;
 import com.lazy.rocketmq.util.MqUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,11 @@ public class RocketMqProducerConfiguration {
     public YsMqProducer defaultMqProducer() {
         ProducerBean producer = new ProducerBean();
         producer.setProperties(MqUtil.getProperty(consumerProperties));
-        return consumerProperties.isEnableTlog() ? new YsTlogMqProducer(producer) : new YsDefaultMqProducer(producer);
+        OrderProducerBean orderProducerBean = new OrderProducerBean();
+        orderProducerBean.setProperties(MqUtil.getProperty(consumerProperties));
+        return consumerProperties.isEnableTlog()
+                ? new YsTlogMqProducer(producer, orderProducerBean)
+                : new YsDefaultMqProducer(producer, orderProducerBean);
     }
 
 }
