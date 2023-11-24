@@ -25,6 +25,8 @@ public class YsApiFile {
 
     MultipartFile file;
 
+    String fileName;
+
     public YsApiFile(HttpServletRequest httpRequest) {
         this(httpRequest, "file");
     }
@@ -32,6 +34,7 @@ public class YsApiFile {
     public YsApiFile(HttpServletRequest httpRequest, String paramKey) {
         this.fileUrl = (null != httpRequest.getParameterMap().get(paramKey) && file == null) ? "" : null;
         this.file = getFile(httpRequest, paramKey);
+        this.fileName = paramKey;
     }
 
     /**
