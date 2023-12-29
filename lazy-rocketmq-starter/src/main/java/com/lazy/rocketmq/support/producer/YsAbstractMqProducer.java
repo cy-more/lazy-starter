@@ -26,6 +26,7 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
 
     public YsAbstractMqProducer(ProducerBean producer, OrderProducerBean orderProducer) {
         this.producer = producer;
+        this.orderProducer = orderProducer;
     }
 
     public OrderProducer getOrderProducer() {
@@ -91,12 +92,14 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
      */
     @Override
     public void sendOrder(String topic, String tag, String key, String msgBody, String shardingKey){
+        this.msgLog(topic, tag, msgBody);
         Message message = initMessage(topic, tag, key, msgBody);
         orderProducer.send(message, shardingKey);
     }
 
     public void start(){
         producer.start();
+        orderProducer.start();
     }
 
     public void shutdown(){
