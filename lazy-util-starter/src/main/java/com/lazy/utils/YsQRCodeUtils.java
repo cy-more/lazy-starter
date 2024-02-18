@@ -19,7 +19,7 @@ import java.util.Map;
  * @description：二维码/条形码
  * @date ：2021/10/8 15:25
  */
-public class QRCodeUtils {
+public class YsQRCodeUtils {
     private static final String CHARSET = "utf-8";
     private static final String FORMAT_NAME = "JPG";
 

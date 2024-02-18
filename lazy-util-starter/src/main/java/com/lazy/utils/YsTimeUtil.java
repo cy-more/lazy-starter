@@ -56,4 +56,14 @@ public class YsTimeUtil {
     public static String getStringByTime(LocalDateTime time){
         return getStringByTime(time, DatePattern.NORM_DATETIME_PATTERN);
     }
+
+    /**
+     * String转LocalDateTime
+     * @param time
+     * @param pattern
+     * @return
+     */
+    public static LocalDateTime getTimeByString(String time, String pattern){
+        return LocalDateTime.parse(time, DateTimeFormatter.ofPattern(pattern));
+    }
 }

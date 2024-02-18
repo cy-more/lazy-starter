@@ -13,7 +13,7 @@ import java.io.StringWriter;
  * @description：xml
  * @date ：2022/1/6 20:33
  */
-public class XmlUtil {
+public class YsXmlUtil {
 
     /**
      * xml转换成JavaBean

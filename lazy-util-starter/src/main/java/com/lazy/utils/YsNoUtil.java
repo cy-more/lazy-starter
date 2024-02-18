@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @description：通用工具
  * @date ：2021/9/18 15:00
  */
-public class NoUtil {
+public class YsNoUtil {
     private static final String CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final int SCALE = 62;
     private static final int MIN_LENGTH = 5;

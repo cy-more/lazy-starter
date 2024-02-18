@@ -3,7 +3,7 @@ package com.lazy.security.util;
 import com.alibaba.fastjson.JSON;
 import com.lazy.entity.ResultMsg;
 import com.lazy.exception.ResultCode;
-import com.lazy.utils.LogUtil;
+import com.lazy.utils.YsLogUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -61,7 +61,7 @@ public class YsResponseUtil {
             out.flush();
             out.close();
         } catch (Exception e1) {
-            LogUtil.logError(e1);
+            YsLogUtil.logError(e1);
         }
     }
 

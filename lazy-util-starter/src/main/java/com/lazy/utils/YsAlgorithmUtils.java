@@ -12,7 +12,7 @@ import java.security.MessageDigest;
  * @email zzdvip88@aliyun.com
  */
 @Slf4j
-public class AlgorithmUtils {
+public class YsAlgorithmUtils {
 
     /**
      * 对字符串进行MD5编码
@@ -111,5 +111,5 @@ public class AlgorithmUtils {
 
     private static final String KEY_MD5 = "MD5";
 
-    private AlgorithmUtils() {}
+    private YsAlgorithmUtils() {}
 }

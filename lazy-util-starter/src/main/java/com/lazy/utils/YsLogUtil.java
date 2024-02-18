@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date ：2021/9/26 14:36
  */
 @Slf4j
-public class LogUtil {
+public class YsLogUtil {
 
     public static void logError(Throwable e){
         logError(e, e.getMessage());

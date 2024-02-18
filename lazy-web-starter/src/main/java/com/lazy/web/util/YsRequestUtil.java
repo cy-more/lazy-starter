@@ -1,7 +1,7 @@
 package com.lazy.web.util;
 
 import com.lazy.exception.BizException;
-import com.lazy.utils.LogUtil;
+import com.lazy.utils.YsLogUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletRequest;
@@ -37,7 +37,7 @@ public class YsRequestUtil {
                 sb.append(line);
             }
         } catch (IOException e) {
-            LogUtil.logError(e);
+            YsLogUtil.logError(e);
             throw new BizException(e.getMessage());
         }
         return sb.toString();

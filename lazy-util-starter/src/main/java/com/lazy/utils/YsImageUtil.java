@@ -12,7 +12,7 @@ import java.io.IOException;
  * @description：图片工具
  * @date ：2021/10/9 14:45
  */
-public class ImageUtil {
+public class YsImageUtil {
     /**
      * BufferedImage转byte[]
      *
@@ -25,7 +25,7 @@ public class ImageUtil {
         try {
             ImageIO.write(bImage, "png", out);
         } catch (IOException e) {
-            LogUtil.logError(e);
+            YsLogUtil.logError(e);
             throw new BizException(e.getMessage());
         }
         return out.toByteArray();
@@ -44,7 +44,7 @@ public class ImageUtil {
         try {
             ImageIO.write(bImage, formatName, out);
         } catch (IOException e) {
-            LogUtil.logError(e);
+            YsLogUtil.logError(e);
             throw new BizException(e.getMessage());
         }
         return out.toByteArray();

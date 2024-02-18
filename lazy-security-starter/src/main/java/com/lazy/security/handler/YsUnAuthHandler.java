@@ -2,7 +2,7 @@ package com.lazy.security.handler;
 
 import com.lazy.exception.ResultCode;
 import com.lazy.security.util.YsResponseUtil;
-import com.lazy.utils.LogUtil;
+import com.lazy.utils.YsLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -23,7 +23,7 @@ public class YsUnAuthHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest
             , HttpServletResponse httpServletResponse
             , AuthenticationException e) throws IOException, ServletException {
-        log.debug(LogUtil.initLog(e.getMessage()));
+        log.debug(YsLogUtil.initLog(e.getMessage()));
 //        if (e instanceof InsufficientAuthenticationException){
 //            YsResponseUtil.failHandler(httpServletResponse, ResultCode.UNAUTHORIZED);
 //        }

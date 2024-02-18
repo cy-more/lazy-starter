@@ -299,7 +299,7 @@ public class YsXlsUtil {
                 }catch (Exception e){
                     String errorMsg = String.format("xls导入异常,sheet:[%d],第[%d]行异常,成功数:[%d],错误信息:[%s]"
                             , sheetIndex, rowIndex + 1, rowIndex - 1, e.getMessage());
-                    LogUtil.logError(e, errorMsg);
+                    YsLogUtil.logError(e, errorMsg);
                     throw new BizException(ResultCode.CONFIRM, errorMsg);
                 }
             }
