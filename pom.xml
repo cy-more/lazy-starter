@@ -16,9 +16,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- 对应 boot-2.2.9 with spring 5.2.8 -->
-        <spring-framework.version>5.2.8.RELEASE</spring-framework.version>
-        <spring-boot.version>2.2.9.RELEASE</spring-boot.version>
+        <!-- 对应 boot-2.6.13 with spring 5.3.23 -->
+        <spring-boot.version>2.6.13</spring-boot.version>
+        <spring-framework.version>5.3.23</spring-framework.version>
+        <spring.cloud.alibaba.version>2.2.3.RELEASE</spring.cloud.alibaba.version>
+        <spring.cloud.version>2021.0.5</spring.cloud.version>
     </properties>
 
     <modules>
@@ -105,6 +107,28 @@
             </dependency>
 
             <!-- spring -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- springcloud-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -281,7 +305,7 @@
             <dependency>
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
-                <version>3.4.1</version>
+                <version>4.4.0</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
             <dependency>
@@ -362,7 +386,7 @@
             <dependency>
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
-                <version>4.33.1.ALL</version>
+                <version>4.38.200.ALL</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
             <dependency>
@@ -387,6 +411,39 @@
                 <groupId>com.yomahub</groupId>
                 <artifactId>tlog-web-spring-boot-starter</artifactId>
                 <version>1.5.0</version>
+            </dependency>
+            <!-- json解析 -->
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+            <!-- 小程序支付SDK -->
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-java</artifactId>
+                <version>0.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>4.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.javen205</groupId>
+                <artifactId>IJPay-WxPay</artifactId>
+                <version>2.9.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-java</artifactId>
+                <version>0.2.1</version>
+            </dependency>
+            <!-- ali-oss -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>3.13.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -430,14 +487,27 @@
         <defaultGoal>compile</defaultGoal>
     </build>
 
+    <!-- cd -->
     <distributionManagement>
         <repository>
             <id>rdc-releases</id>
-            <url>https://packages.aliyun.com/maven/repository/2248700-release-5ONwg1/</url>
+            <url>https://packages.aliyun.com/maven/repository/2454330-release-w2jIMN/</url>
         </repository>
         <snapshotRepository>
             <id>rdc-snapshots</id>
-            <url>https://packages.aliyun.com/maven/repository/2248700-snapshot-0dW0wd/</url>
+            <url>https://packages.aliyun.com/maven/repository/2454330-snapshot-EZFrkb/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <!-- tianjian -->
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>rdc-releases</id>-->
+<!--            <url>https://packages.aliyun.com/maven/repository/2248700-release-5ONwg1/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>rdc-snapshots</id>-->
+<!--            <url>https://packages.aliyun.com/maven/repository/2248700-snapshot-0dW0wd/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
 </project>
