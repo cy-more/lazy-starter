@@ -32,7 +32,7 @@ public class YsBeanUtil {
         if (clazz.isAssignableFrom(source.getClass())){
             return clazz.cast(source);
         }
-        if (source instanceof Map){
+        if (source instanceof Map || clazz == Map.class){
             return BeanUtil.toBean(source, clazz);
         }
         final T target = ReflectUtil.newInstanceIfPossible(clazz);

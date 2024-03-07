@@ -8,6 +8,7 @@ import com.lazy.security.entity.YsLoginDTO;
 import com.lazy.security.entity.YsUser;
 import com.lazy.security.util.JwtTokenUtil;
 import com.lazy.security.util.YsResponseUtil;
+import com.lazy.utils.YsBeanUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -40,7 +41,7 @@ public class YsLoginSuccessHandler implements AuthenticationSuccessHandler {
         String token = jwtTokenUtil.generateToken(tokenContentJson);
         String refreshToken = jwtTokenUtil.generateRefreshToken(tokenContentJson);
         //将Token信息返回给用户
-        Map<String, Object> loginMap = BeanUtil.beanToMap(new JwtTokenUtil.RefreshResult(token, refreshToken));
+        Map<String, Object> loginMap = YsBeanUtil.toBean(new JwtTokenUtil.RefreshResult(token, refreshToken), Map.class);
         loginMap.put("detail", ((YsUser)authResult.getPrincipal()).getDetail());
         YsResponseUtil.successHandler(response, loginMap);
     }
