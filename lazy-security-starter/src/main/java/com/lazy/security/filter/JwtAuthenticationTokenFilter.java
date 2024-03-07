@@ -70,7 +70,6 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
             return;
         }
         String username = tokenContent.getUsername();
-        String organizeJson = tokenContent.getOrganize();
         if (username == null){
             YsResponseUtil.failHandler(response, ResultCode.ILLEGAL_JWT_FORMAT);
             return;
@@ -79,10 +78,10 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
         YsUser ysUser = (YsUser) userService.loadUserByUsername(username);
         if (ysUser != null) {
             //存储会话
-            YsAuthenticationToken authResult = new YsAuthenticationToken
+            YsAuthenticationToken<JwtTokenUtil.TokenInfo> authResult = new YsAuthenticationToken<>
                     (ysUser.getUsername(), null, ysUser.getAuthorities());
             authResult.setDetails(ysUser.getDetail());
-            authResult.setOrganizes(JSONArray.parseArray(organizeJson, String.class));
+            authResult.setSession(tokenContent);
             SecurityContextHolder.getContext().setAuthentication(authResult);
             //记录操作日志
             operateLog(ysUser, request, response, chain);

@@ -47,9 +47,9 @@ public interface JwtTokenUtil {
     }
 
     @Data
-    class TokenInfo implements Serializable {
+    class TokenInfo<T> implements Serializable {
 
         private String username;
-        private String organize;
+        private T currentContent;
     }
 }

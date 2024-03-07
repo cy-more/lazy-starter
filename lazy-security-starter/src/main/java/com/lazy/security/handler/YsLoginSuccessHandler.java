@@ -34,12 +34,8 @@ public class YsLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException, ServletException {
         //填充 jwt-token信息
-        JwtTokenUtil.TokenInfo tokenContentJson = new JwtTokenUtil.TokenInfo();
+        JwtTokenUtil.TokenInfo<Object> tokenContentJson = new JwtTokenUtil.TokenInfo<>();
         tokenContentJson.setUsername(authResult.getName());
-        List<String> currentOrganize = ((YsLoginDTO) authResult.getDetails()).getOrganizes();
-        if (ObjectUtil.isNotEmpty(currentOrganize)) {
-            tokenContentJson.setOrganize(JSONObject.toJSONString(currentOrganize));
-        }
 
         String token = jwtTokenUtil.generateToken(tokenContentJson);
         String refreshToken = jwtTokenUtil.generateRefreshToken(tokenContentJson);

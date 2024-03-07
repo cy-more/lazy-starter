@@ -14,5 +14,6 @@ public class YsLoginDTO {
 
     private String username;
     private String password;
-    private List<String> organizes;
+
+    private String loginType;
 }

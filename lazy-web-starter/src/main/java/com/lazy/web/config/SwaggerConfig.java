@@ -32,6 +32,11 @@ public class SwaggerConfig {
     @Value("${spring.application.name}")
     private String applicationName;
 
+    @Bean
+    public static SwaggerBeanPostProcessor swaggerBeanPostProcessor(){
+        return new SwaggerBeanPostProcessor();
+    }
+
     /**
      * 配置
      * @return

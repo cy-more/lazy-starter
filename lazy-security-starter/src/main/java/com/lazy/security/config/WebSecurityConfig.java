@@ -32,6 +32,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
  * @date ：2021/10/15 15:49
  */
 @Configuration
+@ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 @AutoConfigureAfter(CustomizeSecurityConfig.class)
 @EnableWebSecurity
 @EnableConfigurationProperties(YsSecurityProperties.class)

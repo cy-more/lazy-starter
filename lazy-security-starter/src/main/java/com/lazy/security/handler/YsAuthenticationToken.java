@@ -11,12 +11,12 @@ import java.util.List;
  * @description ：线程会话
  * @date ：2022/9/30 18:44
  */
-public class YsAuthenticationToken extends UsernamePasswordAuthenticationToken {
+public class YsAuthenticationToken<T> extends UsernamePasswordAuthenticationToken {
 
     /**
      * 当前会话组织
      */
-    private List<String> organizes;
+    protected T session;
 
     public YsAuthenticationToken(Object principal, Object credentials) {
         super(principal, credentials);
@@ -26,11 +26,11 @@ public class YsAuthenticationToken extends UsernamePasswordAuthenticationToken {
         super(principal, credentials, authorities);
     }
 
-    public List<String> getOrganizes() {
-        return organizes;
+    public T getSession() {
+        return session;
     }
 
-    public void setOrganizes(List<String> organizes) {
-        this.organizes = organizes;
+    public void setSession(T session) {
+        this.session = session;
     }
 }

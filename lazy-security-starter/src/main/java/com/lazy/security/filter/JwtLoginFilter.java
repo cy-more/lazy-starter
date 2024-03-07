@@ -64,14 +64,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         authentication.setDetails(user);
         Authentication authResult = getAuthenticationManager().authenticate(authentication);
 
-        //校验当前组织
-        List<String> currentOrganize = user.getOrganizes();
-        YsUser principal = (YsUser) authResult.getPrincipal();
-        List<YsOrganize> userOrganizes = principal.getOrganizes();
-        if (ObjectUtil.isNotEmpty(currentOrganize) && ObjectUtil.isNotEmpty(userOrganizes)
-                && !userOrganizes.stream().map(YsOrganize::getCode).collect(Collectors.toSet()).containsAll(currentOrganize)) {
-            throw new BizException("无权限以当前组织身份登陆");
-        }
         return authResult;
     }
 
