@@ -15,11 +15,11 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 @Configuration
 @EnableConfigurationProperties(YsSecurityProperties.class)
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true, securedEnabled = true)
-public class AuthSecurityConfig extends GlobalMethodSecurityConfiguration {
+public class AuthAccessSecurityConfig extends GlobalMethodSecurityConfiguration {
 
     private final YsSecurityProperties securityProperties;
 
-    public AuthSecurityConfig(YsSecurityProperties securityProperties) {
+    public AuthAccessSecurityConfig(YsSecurityProperties securityProperties) {
         this.securityProperties = securityProperties;
     }
 

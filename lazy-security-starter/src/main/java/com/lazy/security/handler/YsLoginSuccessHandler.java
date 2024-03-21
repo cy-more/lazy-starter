@@ -1,10 +1,5 @@
 package com.lazy.security.handler;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSONObject;
-import com.lazy.security.constant.AuthConstants;
-import com.lazy.security.entity.YsLoginDTO;
 import com.lazy.security.entity.YsUser;
 import com.lazy.security.util.JwtTokenUtil;
 import com.lazy.security.util.YsResponseUtil;
@@ -16,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**

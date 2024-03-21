@@ -16,7 +16,7 @@ import java.io.IOException;
  * @description ：登录失败处理器
  * @date ：2022/11/1 17:19
  */
-public class YsLoginFailHandler implements AuthenticationFailureHandler {
+public class YsLoginFailPasswordHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
@@ -25,7 +25,7 @@ public class YsLoginFailHandler implements AuthenticationFailureHandler {
             BizException bizException = (BizException) cause;
             YsResponseUtil.failHandler(response, bizException.getErrorCode(), bizException.getMessage());
         }else {
-            YsResponseUtil.failHandler(response, ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage());
+            YsResponseUtil.failHandler(response, ResultCode.UNAUTHORIZED.getCode(), "账号或密码输入错误");
         }
     }
 }
