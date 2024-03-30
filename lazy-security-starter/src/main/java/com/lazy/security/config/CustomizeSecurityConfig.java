@@ -2,6 +2,7 @@ package com.lazy.security.config;
 
 import com.lazy.security.entity.YsUser;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,14 @@ import java.util.Map;
  * @date ：2022/8/19 10:13
  */
 @Configuration
+@EnableConfigurationProperties(YsSecurityProperties.class)
 public class CustomizeSecurityConfig {
+
+    private final YsSecurityProperties securityProperties;
+
+    public CustomizeSecurityConfig(YsSecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
 
     /**
      * 密码管理器

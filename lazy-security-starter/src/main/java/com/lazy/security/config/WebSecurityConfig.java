@@ -1,8 +1,10 @@
 package com.lazy.security.config;
 
 import com.lazy.security.filter.JwtAuthenticationTokenFilter;
-import com.lazy.security.filter.JwtLoginFilter;
+import com.lazy.security.filter.JwtLoginPasswordFilter;
 import com.lazy.security.handler.YsDeniedHandler;
+import com.lazy.security.handler.YsLoginFailPasswordHandler;
+import com.lazy.security.handler.YsLoginSuccessHandler;
 import com.lazy.security.handler.YsUnAuthHandler;
 import com.lazy.security.util.JwtTokenUtil;
 import com.lazy.security.util.JwtTokenUtilImpl;
@@ -21,7 +23,6 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -81,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //认证失败处理器
         YsUnAuthHandler authenticationEntryPoint = new YsUnAuthHandler();
         //认证
-        UsernamePasswordAuthenticationFilter authenticationFilter = jwtLoginFilter();
+        JwtLoginPasswordFilter authenticationFilter = jwtLoginPasswordFilter();
         //鉴权
         BasicAuthenticationFilter basicAuthenticationFilter = jwtAuthenticationTokenFilter();
 
@@ -119,20 +120,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    @ConditionalOnMissingBean(JwtTokenUtil.class)
-    public JwtTokenUtil jwtTokenUtil() {
-        return new JwtTokenUtilImpl(securityProperties);
-    }
-
     /**
      * 获取认证过滤器
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(UsernamePasswordAuthenticationFilter.class)
-    public UsernamePasswordAuthenticationFilter jwtLoginFilter() throws Exception{
-        return new JwtLoginFilter(super.authenticationManager(), jwtTokenUtil());
+    @ConditionalOnMissingBean(JwtLoginPasswordFilter.class)
+    public JwtLoginPasswordFilter jwtLoginPasswordFilter() throws Exception{
+        JwtLoginPasswordFilter JwtLoginPasswordFilter = new JwtLoginPasswordFilter();
+        JwtLoginPasswordFilter.setAuthenticationManager(this.authenticationManager());
+        JwtLoginPasswordFilter.setAuthenticationSuccessHandler(ysLoginSuccessHandler());
+        JwtLoginPasswordFilter.setAuthenticationFailureHandler(ysLoginFailHandler());
+        return JwtLoginPasswordFilter;
     }
 
     /**
@@ -149,6 +148,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return jwtAuthenticationTokenFilter;
     }
 
+
+    @Bean
+    @ConditionalOnMissingBean(JwtTokenUtil.class)
+    public JwtTokenUtil jwtTokenUtil() {
+        return new JwtTokenUtilImpl(securityProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(YsLoginSuccessHandler.class)
+    public YsLoginSuccessHandler ysLoginSuccessHandler() {
+        return new YsLoginSuccessHandler(jwtTokenUtil());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(YsLoginSuccessHandler.class)
+    public YsLoginFailPasswordHandler ysLoginFailHandler(){
+        return new YsLoginFailPasswordHandler();
+    }
+
     /**j
      * 跨域配置
      * @return
@@ -158,7 +176,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return httpServletRequest -> {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowCredentials(true);
-            config.addAllowedOrigin("*");
+            config.addAllowedOriginPattern("*");
             config.addAllowedHeader("*");
             config.addAllowedMethod("*");
             config.setMaxAge(3600L);

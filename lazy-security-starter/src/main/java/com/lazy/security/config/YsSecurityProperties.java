@@ -40,7 +40,7 @@ public class YsSecurityProperties {
     /**
      * jwt参数前缀
      */
-    private String jwtTokenBearer = "Mac ";
+    private String jwtTokenBearer = "Bearer ";
 
     /**
      * jwt刷新时间（单位s）

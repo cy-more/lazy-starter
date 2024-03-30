@@ -7,12 +7,14 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.lazy.web.param.YsAttributeParamProcessor;
 import com.lazy.web.param.YsRequestBodyTransAdvice;
+import com.lazy.web.support.YsHttpsClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
@@ -147,6 +149,11 @@ public class WebConfig implements WebMvcConfigurer {
         return new RestTemplate(factory);
     }
 
+    @ConditionalOnBean(name = "httpsTemplate")
+    public YsHttpsClient httpsClient(RestTemplate httpsTemplate){
+        return new YsHttpsClient(httpsTemplate);
+    }
+
     /**
      * 通讯工具
      * @return
@@ -188,4 +195,5 @@ public class WebConfig implements WebMvcConfigurer {
         factory.setReadTimeout(30000);
         return factory;
     }
+
 }

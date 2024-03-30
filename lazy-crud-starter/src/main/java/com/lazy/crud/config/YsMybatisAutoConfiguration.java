@@ -92,7 +92,7 @@ public class YsMybatisAutoConfiguration {
     @ConditionalOnMissingBean(TypeHandlerRegistry.class)
     public TypeHandlerRegistry typeHandlerRegistry(SqlSessionFactory sqlSessionFactory){
         TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration().getTypeHandlerRegistry();
-        typeHandlerRegistry.register(AesTypeHandler.class);
+//        typeHandlerRegistry.register(AesTypeHandler.class);
         return typeHandlerRegistry;
     }
 
