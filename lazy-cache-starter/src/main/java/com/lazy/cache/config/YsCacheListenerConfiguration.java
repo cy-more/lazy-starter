@@ -5,6 +5,7 @@ import com.lazy.cache.support.YsMultiCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +23,15 @@ import org.springframework.util.Assert;
 @ConditionalOnBean(YsMultiCacheManager.class)
 @AutoConfigureAfter({YsCacheAutoConfiguration.class})
 @EnableConfigurationProperties(YsMultiCacheProperties.class)
+@ConditionalOnMissingBean(YsCacheListenerConfiguration.class)
 public class YsCacheListenerConfiguration {
 
     @Autowired
     YsMultiCacheProperties multiCacheProperties;
+
+    public YsMultiCacheProperties getMultiCacheProperties() {
+        return multiCacheProperties;
+    }
 
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisTemplate<Object, Object> cacheRedisTemplate, YsMultiCacheManager multiCacheManager) {
@@ -33,7 +39,7 @@ public class YsCacheListenerConfiguration {
         RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
         redisMessageListenerContainer.setConnectionFactory(cacheRedisTemplate.getConnectionFactory());
         CaffeineUpdateListener cacheMessageListener = new CaffeineUpdateListener(cacheRedisTemplate, multiCacheManager);
-        redisMessageListenerContainer.addMessageListener(cacheMessageListener, new ChannelTopic(multiCacheProperties.getTopic()));
+        redisMessageListenerContainer.addMessageListener(cacheMessageListener, new ChannelTopic(getMultiCacheProperties().getTopic()));
         return redisMessageListenerContainer;
     }
 }
