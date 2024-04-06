@@ -146,9 +146,13 @@ public class WebConfig implements WebMvcConfigurer {
 
         factory.setHttpClient(httpClient);
 
-        return new RestTemplate(factory);
+        RestTemplate restTemplate = new RestTemplate(factory);
+
+        setRestTemplateConverter(restTemplate);
+        return restTemplate;
     }
 
+    @Bean
     @ConditionalOnBean(name = "httpsTemplate")
     public YsHttpsClient httpsClient(RestTemplate httpsTemplate){
         return new YsHttpsClient(httpsTemplate);
@@ -162,6 +166,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate(){
         RestTemplate restTemplate = new RestTemplate(this.createFactory());
+        setRestTemplateConverter(restTemplate);
+        return restTemplate;
+    }
+
+    public void setRestTemplateConverter(RestTemplate restTemplate){
         List<HttpMessageConverter<?>> converterList = restTemplate.getMessageConverters();
 
         //重新设置StringHttpMessageConverter字符集为UTF-8，解决中文乱码问题
@@ -179,7 +188,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         //加入FastJson转换器
         converterList.add(new FastJsonHttpMessageConverter());
-        return restTemplate;
     }
 
     /**
