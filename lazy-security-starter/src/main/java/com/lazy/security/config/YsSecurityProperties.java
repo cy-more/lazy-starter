@@ -30,7 +30,7 @@ public class YsSecurityProperties {
     /**
      * refresh jwt过期时间（单位s）
      */
-    private Long jwtExpirationForRefresh = 7 * 24 * 60 * 60L;
+    private Long jwtExpirationForRefresh;
 
     /**
      * jwt请求头key
