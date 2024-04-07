@@ -25,6 +25,7 @@ public class YsUser implements UserDetails {
     private String username;
     private String password;
     private Collection<GrantedAuthority> authorities;
+    private Collection<String> roleIds;
     private boolean isEnable = true;
     private Object detail;
     private List<YsOrganize> organizes;
