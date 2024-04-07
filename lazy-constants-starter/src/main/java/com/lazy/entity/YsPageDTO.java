@@ -38,6 +38,10 @@ public class YsPageDTO<T extends Serializable>  implements Serializable {
      * @param size
      */
     public void setSize(Long size) {
-        this.size = size > 10000 ? 10000 : size;
+        this.size = size > 10000L ? 10000L : size;
+    }
+
+    public void setSizeMax(){
+        this.size = 10000L;
     }
 }
