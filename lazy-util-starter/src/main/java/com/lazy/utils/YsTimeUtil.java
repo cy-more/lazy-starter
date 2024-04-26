@@ -5,6 +5,7 @@ import cn.hutool.core.date.DatePattern;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
 /**
  * @author ：cy
@@ -43,7 +44,7 @@ public class YsTimeUtil {
      * @param pattern
      * @return
      */
-    public static String getStringByTime(LocalDateTime time, String pattern){
+    public static String getStringByTime(TemporalAccessor time, String pattern){
         return DateTimeFormatter.ofPattern(pattern).format(time);
     }
 
@@ -53,7 +54,7 @@ public class YsTimeUtil {
      * @param time
      * @return
      */
-    public static String getStringByTime(LocalDateTime time){
+    public static String getStringByTime(TemporalAccessor time){
         return getStringByTime(time, DatePattern.NORM_DATETIME_PATTERN);
     }
 
