@@ -33,11 +33,10 @@ public class YsTlogOrderMqConsumer implements YsRocketMqOrderConsumer {
         try {
             tLogMqWrapBean = MqUtil.toObj(message.getBody(), TLogMqWrapBean.class);
         }catch (Exception e) {
-            //不兼容tlog则不做转换处理
-            log.warn(String.format("接收的消息不是tlog包装消息!，请和发送端确认是否都是采用开启tlog配置，topic:%s,tag:%s"
-                    , message.getTopic()
-                    , message.getTag()));
-            return consumer.consume(message, context);
+            return defaultConsume(message, context);
+        }
+        if (tLogMqWrapBean.getTraceId() == null){
+            return defaultConsume(message, context);
         }
         AtomicReference<OrderAction> result = new AtomicReference<>();
         TLogMqConsumerProcessor.process(tLogMqWrapBean, (TLogMqRunner<Object>) o -> {
@@ -53,4 +52,18 @@ public class YsTlogOrderMqConsumer implements YsRocketMqOrderConsumer {
         consumer.prepareStart(consumerBean);
     }
 
+
+    /**
+     * tlog消息接收不了转为普通消息
+     * @param message
+     * @param context
+     * @return
+     */
+    private OrderAction defaultConsume(Message message, ConsumeOrderContext context){
+        //不兼容tlog则不做转换处理
+        log.warn(String.format("接收的消息不是tlog包装消息!，请和发送端确认是否都是采用开启tlog配置，topic:%s,tag:%s"
+                , message.getTopic()
+                , message.getTag()));
+        return consumer.consume(message, context);
+    }
 }
