@@ -28,6 +28,34 @@ public class YsCollectionUtil {
         return unRepeatMap.values();
     }
 
+    /**
+     * 取交集
+     * @param collectionA
+     * @param collectionB
+     * @param mapper
+     * @return
+     * @param <T>
+     * @param <R>
+     * @param <C>
+     */
+    public static <T, R, C extends Collection<T>> List<T> getIntersection(C collectionA, C collectionB, Function<? super T, ? extends R> mapper){
+        LinkedList<T> intersection = new LinkedList<T>();
+        collectionA.forEach(a -> {
+            R av = mapper.apply(a);
+            if (av != null){
+                boolean isContain = collectionB.stream().anyMatch(b -> {
+                    R bv = mapper.apply(b);
+                    return av.equals(bv);
+                });
+                if (isContain){
+                    intersection.add(a);
+                }
+            }
+        });
+
+        return intersection;
+    }
+
 
     /**
      * 只包含Map和List的集合 获取最下级kv
