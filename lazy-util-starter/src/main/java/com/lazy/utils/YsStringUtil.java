@@ -16,6 +16,7 @@ public class YsStringUtil {
     private static final Pattern LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]*$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
+    private static final Pattern COMPLEX_PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*(),./;'\\[\\]\\-=])(?=\\S+$).{8,15}$");
 
     /**
      * 驼峰转下划线,最后转为大写
@@ -91,6 +92,20 @@ public class YsStringUtil {
             return false;
         }
         Matcher matcher = PHONE_PATTERN.matcher(str);
+        return matcher.find();
+    }
+
+    /**
+     * 判断密码复杂度是否符合安全标准
+     * 密码长度要大于8小于15，包含大小写字母数字和特殊字符
+     * @param password
+     * @return
+     */
+    public static boolean isComplexPassword(String password){
+        if (password == null || password.length() == 0) {
+            return false;
+        }
+        Matcher matcher = COMPLEX_PASSWORD_PATTERN.matcher(password);
         return matcher.find();
     }
 }

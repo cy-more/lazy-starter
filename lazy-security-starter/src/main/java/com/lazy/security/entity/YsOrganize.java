@@ -3,6 +3,8 @@ package com.lazy.security.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author ：cy
  * @description ：组织
@@ -10,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class YsOrganize {
+public class YsOrganize implements Serializable {
 
     String code;
 }
