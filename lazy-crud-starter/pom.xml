@@ -63,5 +63,19 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>LATEST</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.4.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
