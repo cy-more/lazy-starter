@@ -11,6 +11,18 @@ import java.util.function.Function;
 public class YsCollectionUtil {
 
     /**
+     * 判断2个集合元素是否相同（不要求顺序）
+     * @param coll1
+     * @param coll2
+     * @return
+     */
+    public static boolean isRepeatItem(Collection coll1, Collection coll2){
+        Set set1 = new HashSet<>(coll1);
+        Set set2 = new HashSet<>(coll2);
+        return set1.equals(set2);
+    }
+
+    /**
      * 去重
      * 注意事项：会破坏原先排序
      * @param collection
@@ -75,12 +87,12 @@ public class YsCollectionUtil {
     private static void extractLeafEntries(Map<String, Object> document, List<Map.Entry<String, Object>> leafEntries) {
         for (Map.Entry<String, Object> entry : document.entrySet()) {
             if (entry.getValue() instanceof Map) {
-                extractLeafEntries((Map) entry.getValue(), leafEntries);
+                extractLeafEntries((Map<String, Object>) entry.getValue(), leafEntries);
             } else if (entry.getValue() instanceof List) {
                 List<?> list = (List<?>) entry.getValue();
                 for (Object item : list) {
                     if (item instanceof Map) {
-                        extractLeafEntries((Map) item, leafEntries);
+                        extractLeafEntries((Map<String, Object>) item, leafEntries);
                     }
                 }
             } else {

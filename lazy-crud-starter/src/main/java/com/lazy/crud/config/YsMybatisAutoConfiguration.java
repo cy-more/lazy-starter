@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.lazy.crud.mybatis.AesTypeHandler;
 import com.lazy.crud.service.DataDicService;
 import com.lazy.crud.service.impl.DataDicServiceImpl;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -13,6 +12,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class YsMybatisAutoConfiguration {
 
-    @Autowired
+    @Autowired(required = false)
     CacheProperties cacheProperties;
 
     /**
@@ -75,6 +75,7 @@ public class YsMybatisAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(name = "caffeineCache")
+    @ConditionalOnProperty(prefix = "spring.cache.caffeine", name = "spec")
     public Cache<Object, Object> caffeineCache(){
         String specification = cacheProperties.getCaffeine().getSpec();
         if (StringUtils.hasText(specification)) {
