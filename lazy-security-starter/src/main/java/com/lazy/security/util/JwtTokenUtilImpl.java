@@ -75,13 +75,12 @@ public class JwtTokenUtilImpl implements JwtTokenUtil{
             return null;
         }
         //如果token在30分钟之内刚刷新过，返回原token
-        if (tokenRefreshJustBefore(token, securityProperties.getJwtRefreshExp())) {
-            return null;
-        } else {
-            claims.put(CLAIM_KEY_CREATED, new Date());
-            return new RefreshResult(generateToken(claims, securityProperties.getJwtExpiration())
-                                    , generateToken(claims, securityProperties.getJwtExpirationForRefresh()));
-        }
+//        if (tokenRefreshJustBefore(token, securityProperties.getJwtRefreshExp())) {
+//            return null;
+//        }
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return new RefreshResult(generateToken(claims, securityProperties.getJwtExpiration())
+                                , generateToken(claims, securityProperties.getJwtExpirationForRefresh()));
     }
 
     /**

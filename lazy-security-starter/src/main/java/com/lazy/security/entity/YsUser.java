@@ -21,7 +21,7 @@ public class YsUser implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    private Long id;
     private String username;
     private String password;
     private Collection<GrantedAuthority> authorities;

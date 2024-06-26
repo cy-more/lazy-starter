@@ -38,6 +38,13 @@ public class ResultMsg<T> {
 		return new ResultMsg<T>(null);
 	}
 
+	public static <T extends Object> ResultMsg<T> okMsg(String msg) {
+		ResultMsg<T> tResultMsg = new ResultMsg<>(null);
+		tResultMsg.setMsg(msg);
+		return tResultMsg;
+	}
+
+
 	/**
 	 * 请使用   new BizException
 	 * @param errorCode
