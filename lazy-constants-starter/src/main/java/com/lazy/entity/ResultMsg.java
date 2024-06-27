@@ -12,7 +12,7 @@ import java.util.Date;
 public class ResultMsg<T> {
 
 	private String code = "success";
-	private String msg = "";
+	private String msg = "成功";
 	private T data;
 	private Date reponseTime = new Date();
 
