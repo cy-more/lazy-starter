@@ -7,7 +7,7 @@ import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 
 /**
  * @author ：cy
- * @description：sn消费
+ * @description：消费
  * @date ：2021/11/2 10:09
  */
 public interface YsRocketMqConsumer {

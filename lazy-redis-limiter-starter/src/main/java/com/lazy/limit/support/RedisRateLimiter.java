@@ -13,6 +13,9 @@ import java.util.List;
 /**
  * @author ：cy
  * @description：限流器
+ * 额外功能：
+ * 1.支持令牌回滚
+ * 2.额外支持查询当前桶大小
  * 或直接使用redisson
  * copy from org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter
  * See https://stripe.com/blog/rate-limiters
@@ -96,6 +99,17 @@ public class RedisRateLimiter {
             log.error("warnMessage:Error determining if user allowed from redis", e);
         }
         return new RedisLimiterVO(true, 0L);
+    }
+
+    /**
+     * 获取剩余令牌数
+     * @param keyId
+     * @param replenishRate
+     * @param burstCapacity
+     * @return
+     */
+    public Long getCurrentTokenNum(String keyId, int replenishRate, int burstCapacity){
+        return isAllowed(keyId, replenishRate, burstCapacity, 0).getTokensLeft();
     }
 
     static List<String> getKeys(String id) {

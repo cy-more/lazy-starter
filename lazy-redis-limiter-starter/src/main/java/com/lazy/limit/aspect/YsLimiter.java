@@ -43,4 +43,9 @@ public @interface YsLimiter {
      * @return
      */
     long leaseTime() default 0L;
+
+    /**
+     * 限流是否支持异常回退令牌
+     */
+    boolean isRollBack() default false;
 }
