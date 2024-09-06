@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -337,9 +338,14 @@ public class YsServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T>
     public String getColumnName(String fieldName){
         //获取字段kv
         Map<String, String> fieldMap = (Map<String, String>) caffeineCache.get(CrudConstant.FIELD_DIC + entityClass,
-                k -> TableInfoHelper.getTableInfo(entityClass).getFieldList()
-                        .stream()
-                        .collect(Collectors.toMap(TableFieldInfo::getProperty, TableFieldInfo::getColumn)));
+                k -> {
+                    TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+                    Map<String, String> columList = tableInfo.getFieldList()
+                            .stream()
+                            .collect(Collectors.toMap(TableFieldInfo::getProperty, TableFieldInfo::getColumn));
+                    columList.put(tableInfo.getKeyProperty(), tableInfo.getKeyColumn());
+                    return columList;
+                });
 
         return fieldMap.get(fieldName);
     }
