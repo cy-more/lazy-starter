@@ -18,6 +18,7 @@ import com.lazy.annotation.YsCondition;
 import com.lazy.crud.constants.CrudConstant;
 import com.lazy.crud.service.DataDicService;
 import com.lazy.entity.YsPageDTO;
+import com.lazy.entity.YsPageTemplate;
 import com.lazy.entity.YsPageVO;
 import com.lazy.exception.BizException;
 import com.lazy.utils.YsBeanUtil;

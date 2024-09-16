@@ -1,6 +1,9 @@
 package com.lazy.annotation;
 
 
+import com.lazy.entity.YsUnknownTypeHandler;
+import com.lazy.interfaces.YsTypeHandler;
+
 import java.lang.annotation.*;
 
 /**
@@ -43,6 +46,8 @@ public @interface YsCondition {
      * @return
      */
     OrderType orderType() default OrderType.IGNORE;
+
+    Class<? extends YsTypeHandler> typeHandler() default YsUnknownTypeHandler.class;
 
 
     enum Type {

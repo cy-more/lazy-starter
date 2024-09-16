@@ -7,7 +7,7 @@
     <groupId>com.lazy</groupId>
     <artifactId>spring-boot-starter</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <project.version>1.0-SNAPSHOT</project.version>
@@ -53,7 +53,7 @@
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-crud-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
@@ -63,27 +63,27 @@
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-redis-limiter-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-kd100-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-web-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-util-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-constants-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.1-SNAPSHOT</version>
             </dependency>
 <!--            <dependency>-->
 <!--                <groupId>com.lazy</groupId>-->
@@ -93,17 +93,17 @@
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-feign-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-cache-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.lazy</groupId>
                 <artifactId>lazy-security-starter</artifactId>
-                <version>${project.version}</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <!-- spring -->
@@ -488,26 +488,26 @@
     </build>
 
     <!-- cd -->
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://packages.aliyun.com/maven/repository/2454330-release-w2jIMN/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://packages.aliyun.com/maven/repository/2454330-snapshot-EZFrkb/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <!-- tianjian -->
 <!--    <distributionManagement>-->
 <!--        <repository>-->
 <!--            <id>rdc-releases</id>-->
-<!--            <url>https://packages.aliyun.com/maven/repository/2248700-release-5ONwg1/</url>-->
+<!--            <url>https://packages.aliyun.com/maven/repository/2454330-release-w2jIMN/</url>-->
 <!--        </repository>-->
 <!--        <snapshotRepository>-->
 <!--            <id>rdc-snapshots</id>-->
-<!--            <url>https://packages.aliyun.com/maven/repository/2248700-snapshot-0dW0wd/</url>-->
+<!--            <url>https://packages.aliyun.com/maven/repository/2454330-snapshot-EZFrkb/</url>-->
 <!--        </snapshotRepository>-->
 <!--    </distributionManagement>-->
+
+    <!-- tianjian -->
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://packages.aliyun.com/maven/repository/2248700-release-5ONwg1/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://packages.aliyun.com/maven/repository/2248700-snapshot-0dW0wd/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

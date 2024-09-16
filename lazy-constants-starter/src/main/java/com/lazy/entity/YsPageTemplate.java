@@ -1,7 +1,5 @@
-package com.lazy.crud.mybatis;
+package com.lazy.entity;
 
-import com.lazy.entity.YsPageDTO;
-import com.lazy.entity.YsPageVO;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -37,14 +35,14 @@ public abstract class YsPageTemplate<M extends Serializable, V> {
      * @param dto
      * @return
      */
-    protected abstract List<V> tPageList(YsPageDTO<M> dto);
+    public abstract List<V> tPageList(YsPageDTO<M> dto);
 
     /**
      * 数量
      * @param dto
      * @return
      */
-    protected Integer tPageCount(YsPageDTO<M> dto){
+    public Integer tPageCount(YsPageDTO<M> dto){
         return null;
     }
 
@@ -52,5 +50,5 @@ public abstract class YsPageTemplate<M extends Serializable, V> {
      * 后加工 如：转意
      * @param pageVO
      */
-    protected void tTransName(V pageVO){}
+    public void tTransName(V pageVO){}
 }
