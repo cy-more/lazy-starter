@@ -21,6 +21,7 @@ import com.lazy.entity.YsPageDTO;
 import com.lazy.entity.YsPageTemplate;
 import com.lazy.entity.YsPageVO;
 import com.lazy.exception.BizException;
+import com.lazy.interfaces.YsTypeHandler;
 import com.lazy.utils.YsBeanUtil;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -158,10 +160,23 @@ public class YsServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T>
             Object value;
             try {
                 value = field.get(condition);
-            } catch (IllegalAccessException e) {
+                if (ObjectUtil.isNotEmpty(value)){
+                    Class<? extends YsTypeHandler> typeHandlerClazz = ysCondition.typeHandler();
+                    YsTypeHandler typeHandler = (YsTypeHandler) caffeineCache.get(CrudConstant.TYPE_HANDLER + typeHandlerClazz.getName(), k -> {
+                        try {
+                            return typeHandlerClazz.newInstance();
+                        } catch (InstantiationException | IllegalAccessException e) {
+                            String errorMsg = "typeHandler初始化异常,error:" + e.getMessage();
+                            log.error(errorMsg, e);
+                            throw new BizException(errorMsg);
+                        }
+                    });
+                    value = typeHandler.setParameter(value);
+                }
+            } catch (SQLException | IllegalAccessException e) {
                 String errorMsg = "分页注解字段获取失败,error:" + e.getMessage();
                 log.error(errorMsg, e);
-                throw new RuntimeException(errorMsg);
+                throw new BizException(errorMsg);
             }
             //为空跳过
             if (ysCondition.ignoreNullValue() && ObjectUtil.isEmpty(value)){

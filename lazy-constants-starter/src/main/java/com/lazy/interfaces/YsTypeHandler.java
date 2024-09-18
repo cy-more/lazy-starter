@@ -1,6 +1,5 @@
 package com.lazy.interfaces;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -10,5 +9,10 @@ import java.sql.SQLException;
  **/
 public interface YsTypeHandler {
 
-    void setParameter(PreparedStatement ps, Object parameter) throws SQLException;
+    /**
+     * 设置参数
+     * @param parameter
+     * @throws SQLException
+     */
+    Object setParameter(Object parameter) throws SQLException;
 }

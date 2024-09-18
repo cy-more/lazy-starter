@@ -2,7 +2,6 @@ package com.lazy.entity;
 
 import com.lazy.interfaces.YsTypeHandler;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -12,6 +11,7 @@ import java.sql.SQLException;
  **/
 public class YsUnknownTypeHandler implements YsTypeHandler {
     @Override
-    public void setParameter(PreparedStatement ps, Object parameter) throws SQLException {
+    public Object setParameter(Object parameter) throws SQLException {
+        return parameter;
     }
 }

@@ -47,6 +47,10 @@ public @interface YsCondition {
      */
     OrderType orderType() default OrderType.IGNORE;
 
+    /**
+     * 类型转换器
+     * @return
+     */
     Class<? extends YsTypeHandler> typeHandler() default YsUnknownTypeHandler.class;
 
 

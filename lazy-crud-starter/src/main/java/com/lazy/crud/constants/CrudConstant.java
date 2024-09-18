@@ -11,6 +11,7 @@ public final class CrudConstant {
      * 字段映射列表 缓存key
      */
     public static final String FIELD_DIC = "fieldDic";
+    public static final String TYPE_HANDLER = "typeHandler";
 
     private CrudConstant() {
     }
