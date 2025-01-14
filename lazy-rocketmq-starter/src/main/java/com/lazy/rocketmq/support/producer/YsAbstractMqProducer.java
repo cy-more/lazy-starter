@@ -48,14 +48,14 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
     /**
      * 发送普通消息
      */
-    public void syncSend(String topic, String tag, Object msgBody){
-        syncSend(topic, tag, null, msgBody);
+    public SendResult syncSend(String topic, String tag, Object msgBody){
+        return syncSend(topic, tag, null, msgBody);
     }
 
-    public void syncSend(String topic, String tag, String key, Object msgBody) {
+    public SendResult syncSend(String topic, String tag, String key, Object msgBody) {
         msgLog(topic, tag, msgBody);
         Message message = initMessage(topic, tag, key, msgBody);
-        producer.send(message);
+        return producer.send(message);
     }
 
     /**
@@ -91,10 +91,10 @@ public abstract class YsAbstractMqProducer implements YsMqProducer{
      * @param shardingKey
      */
     @Override
-    public void sendOrder(String topic, String tag, String key, String msgBody, String shardingKey){
+    public SendResult sendOrder(String topic, String tag, String key, String msgBody, String shardingKey){
         this.msgLog(topic, tag, msgBody);
         Message message = initMessage(topic, tag, key, msgBody);
-        orderProducer.send(message, shardingKey);
+        return orderProducer.send(message, shardingKey);
     }
 
     public void start(){

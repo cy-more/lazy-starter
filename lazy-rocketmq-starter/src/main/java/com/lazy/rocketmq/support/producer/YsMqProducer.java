@@ -1,6 +1,7 @@
 package com.lazy.rocketmq.support.producer;
 
 import com.aliyun.openservices.ons.api.Message;
+import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 
 /**
@@ -17,9 +18,9 @@ public interface YsMqProducer {
     /**
      * 发送普通消息
      */
-    void syncSend(String topic, String tag, Object msgBody);
+    SendResult syncSend(String topic, String tag, Object msgBody);
 
-    void syncSend(String topic, String tag, String key, Object msgBody);
+    SendResult syncSend(String topic, String tag, String key, Object msgBody);
 
     /**
      * 发送异步消息
@@ -37,7 +38,7 @@ public interface YsMqProducer {
      * @param tag
      * @param msgBody
      */
-    void sendOrder(String topic, String tag, String key, String msgBody, String shardingKey);
+    SendResult sendOrder(String topic, String tag, String key, String msgBody, String shardingKey);
 
     /**
      * 初始化message
