@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.support.NullValue;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -45,6 +46,9 @@ public class YsRedisCacheAspect {
     @Qualifier("taskExecutor")
     Executor taskExecutor;
 
+    @Autowired
+    private CacheProperties cacheProperties;
+
     @Pointcut("@annotation(com.lazy.cache.annotation.YsRedisCache)")
     public void redisCachePointCut() {
     }
@@ -65,8 +69,12 @@ public class YsRedisCacheAspect {
             Object cacheVal = result != null ? result : NullValue.INSTANCE;
             taskExecutor.execute(() -> {
                 try {
-                    cacheRedisTemplate.opsForValue().set(keyName, cacheVal
-                            , redisCache.timeout(), redisCache.unit());
+                    if(redisCache.timeout() > 0) {
+                        cacheRedisTemplate.opsForValue().set(keyName, cacheVal
+                                , redisCache.timeout(), redisCache.unit());
+                    }else {
+                        cacheRedisTemplate.opsForValue().set(keyName, cacheVal);
+                    }
                 } catch (Exception e) {
                     cacheErrorHandle(e, cacheVal, redisCache);
                 }
