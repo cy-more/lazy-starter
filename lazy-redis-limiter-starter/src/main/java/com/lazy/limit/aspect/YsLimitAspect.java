@@ -22,12 +22,12 @@ public class YsLimitAspect {
     public void limitPointCut(){}
 
     @Around("limitPointCut() && @annotation(limiter)")
-    public Object limitBefore(ProceedingJoinPoint point, YsLimiter limiter) {
+    public Object limitBefore(ProceedingJoinPoint point, YsLimiter limiter) throws Throwable{
         rateLimiter.isAllowedWithWarn(limiter.key(), limiter.rate(), limiter.capacity(), limiter.request(), limiter.leaseTime());
         try{
             return point.proceed();
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            throw e;
         }finally {
             if (limiter.isRollBack()) {
                 rateLimiter.isAllowed(limiter.key(), limiter.rate(), limiter.capacity(), -limiter.request());

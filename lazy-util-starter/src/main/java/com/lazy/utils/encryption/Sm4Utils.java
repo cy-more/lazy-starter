@@ -4,8 +4,13 @@ package com.lazy.utils.encryption;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.Security;
 
 /**
  * 处理加密数据-配置化 -cy
@@ -19,6 +24,12 @@ public class Sm4Utils {
 
     public Sm4Utils(String sm4KeyStr) {
         this.SM4KEYS = sm4KeyStr.getBytes(StandardCharsets.UTF_8);
+    }
+
+    static {
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
     }
 
     public String sm4EncryData(String data){
@@ -41,5 +52,19 @@ public class Sm4Utils {
             return data;
         }
     }
-    
+
+    /**
+     * 可优化：优化为CBC或GCM,携带VI
+     * @param mode
+     * @param SM4KEYS
+     * @return
+     * @throws Exception
+     */
+    public static Cipher initCipher(int mode, byte[] SM4KEYS) throws Exception {
+        Cipher cipher = Cipher.getInstance("SM4/ECB/PKCS5Padding", "BC");
+        SecretKey secretKey = new SecretKeySpec(SM4KEYS, "SM4");
+
+        cipher.init(mode, secretKey);
+        return cipher;
+    }
 }
