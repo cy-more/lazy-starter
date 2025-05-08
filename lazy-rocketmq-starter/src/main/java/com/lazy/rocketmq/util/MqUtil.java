@@ -62,6 +62,7 @@ public class MqUtil {
         setProperty(properties, PropertyKeyConst.SendMsgTimeoutMillis, consumerProperties.getSendTimeout());
         setProperty(properties, PropertyKeyConst.MaxReconsumeTimes, consumerProperties.getMaxReconsumeTimes());
         setProperty(properties, PropertyKeyConst.MAX_BATCH_MESSAGE_COUNT, consumerProperties.getMaxBatchMessageCount());
+        setProperty(properties, PropertyKeyConst.Namespace, consumerProperties.getInstanceId());
         //将消费者线程数 20为默认值
         setProperty(properties, PropertyKeyConst.ConsumeThreadNums, consumerProperties.getConsumeThreadNums());
 //        properties.setProperty(PropertyKeyConst.BatchConsumeMaxAwaitDurationInSeconds, consumerProperties.getBatchMaxSize());

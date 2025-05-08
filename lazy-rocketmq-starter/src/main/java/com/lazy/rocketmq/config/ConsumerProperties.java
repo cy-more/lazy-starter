@@ -28,6 +28,11 @@ public class ConsumerProperties {
 
     private String suspendTimeMillis;
 
+    /**
+     * 指定实例，用于Serverless版实例
+     */
+    private String instanceId;
+
     private boolean enableTlog = false;
 
 }
