@@ -1,6 +1,5 @@
 package com.lazy.cache.aspect;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.lazy.cache.annotation.YsRedisCache;
 import com.lazy.cache.support.YsBusinessKeyProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +62,7 @@ public class YsRedisCacheAspect {
         } catch (Exception e) {
             cacheErrorHandle(e, "获取缓存失败", redisCache);
         }
-        if (ObjectUtil.isEmpty(result)){
+        if (null == result){
             result = point.proceed();
 
             Object cacheVal = result != null ? result : NullValue.INSTANCE;
